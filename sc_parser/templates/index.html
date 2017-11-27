@@ -1,0 +1,25 @@
+{% extends "bootstrap/base.html" %}
+{% block title %}SC Parser{% endblock %}
+
+{% block content %}
+<div class="container">
+  <h3 class="text-muted">parser:</h3>
+    <main role="main">
+      <div class="jumbotron">
+        <h1 class="display-3">Solidity Smart Contract Parser</h1>
+        <p class="lead">Copy and paste your contract here to evaluate any risks.</p>
+        <form method="POST" action="/">
+          <div class="form-group">
+            <p><textarea name="text" class="form-control" id="contract_area" rows="20"></textarea></p>
+            <p><button type="submit" class="btn btn-primary btn-lg">Analyze</button></p>
+          </div>
+        </form>
+      </div>
+    </main>
+  </div>
+{% endblock %}
+
+{% block styles %}
+{{super()}}
+<link href="narrow-jumbotron.css" rel="stylesheet">
+{% endblock %}
