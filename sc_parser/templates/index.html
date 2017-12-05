@@ -1,25 +1,71 @@
 {% extends "bootstrap/base.html" %}
 {% block title %}SC Parser{% endblock %}
 
-{% block content %}
-<div class="container">
-  <h3 class="text-muted">parser:</h3>
-    <main role="main">
-      <div class="jumbotron">
-        <h1 class="display-3">Solidity Smart Contract Parser</h1>
-        <p class="lead">Copy and paste your contract here to evaluate any risks.</p>
-        <form method="POST" action="/">
-          <div class="form-group">
-            <p><textarea name="text" class="form-control" id="contract_area" rows="20"></textarea></p>
-            <p><button type="submit" class="btn btn-primary btn-lg">Analyze</button></p>
-          </div>
-        </form>
-      </div>
-    </main>
-  </div>
-{% endblock %}
+{% block body %}
+<head>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script type=text/javascript>
+  $(function() {
+    $('a#put_contract').bind('click', function() {
+  $.getJSON('/background_process', {
+    contract: $('textarea[name="contract"]').val(),
+  }, function(data) {
+    console.log(data)
+    $("#risk").text(data.riskCount);
+    htmlContent = ''
+    for (var i = 0; i < data.messageKeys.length; i++) {
+      htmlContent += '<div class="alert '+data.messageKeys[i].type+' alert-dismissible" role="alert"> '+
+        '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button> '+
+        '<h4 id="test-1" class="alert-heading">'+data.messageKeys[i].header+'</h4> '+
+        '<p>'+data.messageKeys[i].text+'</p> '+
+        '</div>'
+    }
+    $('#content').html(htmlContent)
+  });
+  return false;
+    });
+  });
+  </script>
+</head>
 
-{% block styles %}
-{{super()}}
-<link href="narrow-jumbotron.css" rel="stylesheet">
+<body>
+  <div class="container">
+      <main role="main">
+        <div>
+          <h1 class="display-3">Solidity Smart Contract Parser <span class="badge badge-info">Beta</span></h1>
+          <p class="lead">Copy and paste your contract here to evaluate any risks.</p>
+          <form>
+            <div class="form-group">
+              <p><textarea name="contract" class="form-control" rows="20"></textarea></p>
+              <p>
+                <a href="#" id="put_contract"><button class="btn btn-primary btn-lg">Analyze</button></a>
+              </p>
+            </div>
+          </form>
+        </div>
+        <h1>Risk count:<span id='risk'></span></h1>
+        <div id="content">
+        </div>
+
+        <!-- <p>HERE: {{k}}</p>
+        <p>HERE: {{data}}</p>
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            {% for message in messages %}
+              <div class="alert alert-danger alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+              	<h4 id="test-1" class="alert-heading">{{message}}</h4> -->
+                <!-- {% if message == 'Transaction Order Dependence' %}
+                  <p>TRANSACTION ORDER DEPENDENCE We have found this problem with your smart contract. You should update it to make sure.</p>
+                  {% endif %} -->
+                <!-- <p id="test-2"></p>
+              </div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %} -->
+      </main>
+    </div>
+  </div>
+</body>
 {% endblock %}
