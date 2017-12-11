@@ -9,12 +9,12 @@ Bootstrap(app)
 alert_descriptions = {
 'TOD':{'text':'The contract does not check the return value and have exceptions build around it. Since a transaction is in the mempool for a short while, one can know what actions will occur, before it is included in a block. This can be troublesome for things like decentralized markets, where a transaction to buy some tokens can be seen, and a market order implemented before the other transaction gets included.<p><strong>Check return with exceptions: </strong><code>revert();</code> or <code>throw();</code></p>'},
 'TSD':{'text':'Be aware that the timestamp of the block can be manipulated by the miner, and all direct and indirect uses of the timestamp should be considered. Using <code>block.number</code> instead as an index of the block state is a better option if your contract requires exact accuracy.'},
-'MHE':{'text':'Handling exceptions is a crucial part.'},
+'MHE':{'text':'Exception handling is missing when calling another address. Without safeguarding of exception handling, if a <code>.send()</code> or <code>.call()</code> fails the state of the smart contract will still be changed. In some cases this could result in spending of all gas limit or loss of money.'},
 'UNKNOWN_ADDR':{'text':'Cannot do a <code>.call</code> or <code>.send</code> with an undefined address.'},
 'SLD_version':{'text':'Wrong version of <code>pragma solidity</code> is being used, correct version should be <code>0.4.19</code> and you can always double check at <a href="https://github.com/ethereum/solidity/releases/latest">Solidity latest release Github repository</a>'},
 'SLD_alert':{'text':'Solidity decleration is missing or wrong, it should be <code>pragma solidiy ^0.4.19</code>, correct version could be always double checked at <a href="https://github.com/ethereum/solidity/releases/latest">Solidity latest release Github repository</a>'},
 'RET_warning':{'text':'The best way to avoid any problem is to use <code>send()</code> instead of <code>call.value()()</code>. This will prevent any external code from being executed. However, if you cannot remove the external call, the next simplest way to prevent this attack is to make sure you do not call an external function until you have done all the internal work you need to do'},
-'RET_alert':{'text':'There is reentrancy attack vulnerability in your contract since the <code>call.value()</code> is called before the all the work is executed inside function. <p><strong>To prevent this:</strong> do your <code>call.value()</code> calls at the end of the function or use <code>send()</code> instead.</p>'}
+'RET_alert':{'text':'There is reentrancy attack vulnerability in your contract since the <code>call.value()</code> is called before all the work is executed inside function. <p><strong>To prevent this:</strong> do your <code>call.value()</code> calls at the end of the function or use <code>send()</code> instead.</p>'}
 }
 
 @app.route('/')
